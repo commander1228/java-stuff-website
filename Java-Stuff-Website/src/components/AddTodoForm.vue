@@ -9,6 +9,7 @@ const emptyTodo = reactive<CreateTodo>({
 })
 
 async function handleSubmit() {
+    console.log("adding task")
     const TodoToCreate: CreateTodo = {
         title: emptyTodo.title.trim(),
         description: emptyTodo.description.trim(),
