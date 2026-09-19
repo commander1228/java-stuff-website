@@ -1,0 +1,8 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "vite",
+  "installCommand": "cd Java-Stuff-Website && npm ci",
+  "buildCommand": "cd Java-Stuff-Website && npm run build",
+  "outputDirectory": "Java-Stuff-Website/dist",
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+}
