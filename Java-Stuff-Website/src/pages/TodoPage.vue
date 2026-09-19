@@ -21,6 +21,8 @@ async function loadTodos() {
   } finally {
     isLoading.value = false
   }
+
+  onMounted(loadTodos)
 }
 </script>
 

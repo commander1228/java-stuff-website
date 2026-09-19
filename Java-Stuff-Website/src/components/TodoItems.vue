@@ -8,7 +8,7 @@ defineProps<{
 
 <template>
   <section class="min-h-0 flex-1">
-    <h2 class="mb-3 text-xl font-semibold">Tasks</h2>
+    <h2 class="mb-3 text-xl font-semibold">Todo's</h2>
 
     <div class="card h-full bg-base-100 shadow-sm">
       <div class="card-body min-h-0">
