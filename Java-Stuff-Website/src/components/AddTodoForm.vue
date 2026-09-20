@@ -1,12 +1,16 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
-import type { CreateTodo } from '@/types/Todo';
+import type { CreateTodo, Todo } from '@/types/Todo';
 import { createTodo } from '@/services/TodoService';
 
 const emptyTodo = reactive<CreateTodo>({
     title: '',
     description: '',
 })
+
+const emit = defineEmits<{
+    (event: 'added', todo: Todo): void
+}>()
 
 async function handleSubmit() {
     console.log("adding task")
@@ -16,6 +20,9 @@ async function handleSubmit() {
     }
     const createdTodo = await createTodo(TodoToCreate)
     console.log(createdTodo)
+    emptyTodo.title = ''
+    emptyTodo.description = ''
+    emit('added', createdTodo)
 
 }
 

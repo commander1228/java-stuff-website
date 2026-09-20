@@ -8,6 +8,7 @@ import { deleteTodo, getTodos, updateTodo } from '@/services/TodoService'
 const todos = ref<Todo[]>([])
 const isLoading = ref(false)
 const errorMessage = ref('')
+const successMessage = ref('')
 const editDialog = ref<HTMLDialogElement | null>(null)
 const editingTodo = ref<Todo | null>(null)
 const editTitle = ref('')
@@ -47,6 +48,15 @@ async function handleDelete(id: Todo['id']) {
     errorMessage.value =
       error instanceof Error ? error.message : 'Unable to delete the to-do.'
   }
+}
+
+function handleAdded(todo: Todo) {
+  todos.value.push(todo)
+  successMessage.value = `"${todo.title}" was added.`
+
+  window.setTimeout(() => {
+    successMessage.value = ''
+  }, 3000)
 }
 
 async function handleStatusChange(todo: Todo, status: TodoStatus) {
@@ -101,7 +111,9 @@ async function handleEditSubmit() {
   <section class="mx-auto flex h-[calc(100vh-8rem)] max-w-4xl flex-col px-6 py-8">
     <h1 class="text-center text-3xl font-bold text-primary">To-Do</h1>
     <div class="mt-6">
-      <AddTodoForm />
+      <AddTodoForm
+      @added="handleAdded"
+      />
     </div>
 
     <p v-if="isLoading" class="mt-8">Loading to-dos...</p>
@@ -157,5 +169,11 @@ async function handleEditSubmit() {
         <button aria-label="Close edit dialog">close</button>
       </form>
     </dialog>
+
+    <div v-if="successMessage" class="toast toast-end toast-bottom">
+      <div class="alert alert-success">
+        <span>{{ successMessage }}</span>
+      </div>
+    </div>
   </section>
 </template>
