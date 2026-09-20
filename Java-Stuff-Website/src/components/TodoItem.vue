@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { nextTick, ref } from 'vue'
 import {
   Todo_STATUS,
   Todo_STATUS_LABELS,
@@ -19,8 +19,9 @@ const emit = defineEmits<{
 
 const isActionsOpen = ref(false)
 const menuPosition = ref({ top: 0, left: 0 })
+const actionMenu = ref<HTMLElement | null>(null)
 
-function openActions(event: MouseEvent) {
+async function openActions(event: MouseEvent) {
   const button = event.currentTarget as HTMLElement
   const bounds = button.getBoundingClientRect()
 
@@ -29,6 +30,14 @@ function openActions(event: MouseEvent) {
     left: Math.max(8, bounds.right - 208),
   }
   isActionsOpen.value = true
+
+  await nextTick()
+
+  const menuBounds = actionMenu.value?.getBoundingClientRect()
+
+  if (menuBounds && menuBounds.bottom > window.innerHeight - 8) {
+    menuPosition.value.top = Math.max(8, bounds.top - menuBounds.height - 8)
+  }
 }
 
 function closeActions() {
@@ -92,6 +101,7 @@ function handleStatusChange(status: TodoStatus) {
 
     <ul
       v-if="isActionsOpen"
+      ref="actionMenu"
       class="menu fixed z-50 w-52 rounded-box bg-base-100 p-2 shadow"
       role="menu"
       :style="{ top: `${menuPosition.top}px`, left: `${menuPosition.left}px` }"

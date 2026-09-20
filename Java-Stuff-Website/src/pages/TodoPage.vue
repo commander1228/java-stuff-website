@@ -108,7 +108,7 @@ async function handleEditSubmit() {
 
 
 <template>
-  <section class="mx-auto flex h-[calc(100vh-8rem)] max-w-4xl flex-col px-6 py-8">
+  <section class="mx-auto max-w-4xl px-6 py-8">
     <h1 class="text-center text-3xl font-bold text-primary">To-Do</h1>
     <div class="mt-6">
       <AddTodoForm
