@@ -20,6 +20,11 @@ const emit = defineEmits<{
 const isActionsOpen = ref(false)
 const menuPosition = ref({ top: 0, left: 0 })
 const actionMenu = ref<HTMLElement | null>(null)
+const statusBadgeClass: Record<TodoStatus, string> = {
+  NOT_STARTED: 'badge-error',
+  IN_PROGRESS: 'badge-warning',
+  COMPLETED: 'badge-success',
+}
 
 async function openActions(event: MouseEvent) {
   const button = event.currentTarget as HTMLElement
@@ -72,10 +77,10 @@ function handleStatusChange(status: TodoStatus) {
         </div>
 
         <div class="flex items-center gap-2">
-          <span class="badge badge-outline">
+          <span class="badge" :class="statusBadgeClass[props.todo.status]">
             {{ Todo_STATUS_LABELS[props.todo.status] }}
           </span>
-          <span class="badge badge-secondary">
+          <span class="badge badge-primary">
             {{ props.todo.todoType?.name ?? 'No type' }}
           </span>
 

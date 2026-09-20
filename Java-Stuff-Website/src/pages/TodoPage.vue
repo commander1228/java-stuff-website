@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import AddTodoForm from '@/components/AddTodoForm.vue'
+import TodoListControls from '@/components/TodoListControls.vue'
 import TodoItems from '@/components/TodoItems.vue'
-import type { Todo, TodoStatus } from '@/types/Todo'
+import type { Todo, TodoSort, TodoStatus } from '@/types/Todo'
 import type { TodoType } from '@/types/TodoType'
 import { deleteTodo, getTodos, updateTodo } from '@/services/TodoService'
 import { createTodoType, getTodoTypes } from '@/services/TodoTypeService'
@@ -21,28 +22,8 @@ const editTodoTypeId = ref<number | undefined>()
 const isSavingEdit = ref(false)
 const todoTypeName = ref('')
 const isSavingTodoType = ref(false)
-const sortBy = ref<'createdDate' | 'todoType'>('createdDate')
-
-const sortedTodos = computed(() => {
-  return [...todos.value].sort((first, second) => {
-    if (sortBy.value === 'todoType') {
-      const firstTypeName = first.todoType?.name
-      const secondTypeName = second.todoType?.name
-
-      if (!firstTypeName) {
-        return secondTypeName ? 1 : 0
-      }
-
-      if (!secondTypeName) {
-        return -1
-      }
-
-      return firstTypeName.localeCompare(secondTypeName)
-    }
-
-    return second.createdDate.localeCompare(first.createdDate)
-  })
-})
+const sortBy = ref<TodoSort>('createdDate')
+const hideCompleted = ref(true)
 
 async function loadTodos() {
   isLoading.value = true
@@ -186,7 +167,7 @@ async function handleEditSubmit() {
     <h1 class="text-center text-3xl font-bold text-primary">To-Do</h1>
     <div class="mt-6 flex flex-wrap items-start gap-4">
       <AddTodoForm :todo-types="todoTypes" @added="handleAdded" />
-      <button class="btn btn-secondary" type="button" @click="todoTypeDialog?.showModal()">
+      <button class="btn btn-primary" type="button" @click="todoTypeDialog?.showModal()">
         Add To-Do Type
       </button>
     </div>
@@ -198,17 +179,13 @@ async function handleEditSubmit() {
     </p>
 
     <div v-else class="mt-8">
-      <label class="form-control ml-auto w-52">
-        <span class="label-text mb-2">Sort to-dos</span>
-        <select v-model="sortBy" class="select select-bordered">
-          <option value="createdDate">Newest first</option>
-          <option value="todoType">To-do type</option>
-        </select>
-      </label>
+      <TodoListControls v-model:sort-by="sortBy" v-model:hide-completed="hideCompleted" />
 
       <TodoItems
         class="mt-4"
-        :todos="sortedTodos"
+        :todos="todos"
+        :sort-by="sortBy"
+        :hide-completed="hideCompleted"
         @edit="handleEdit"
         @delete="handleDelete"
         @change-status="handleStatusChange"

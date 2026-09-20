@@ -3,6 +3,7 @@ import type { TodoType } from './TodoType'
 export const Todo_STATUS = ['NOT_STARTED','IN_PROGRESS','COMPLETED'] as const
 
 export type TodoStatus = (typeof Todo_STATUS)[number]
+export type TodoSort = 'createdDate' | 'todoType' | 'status'
 
 export const Todo_STATUS_LABELS: Record<TodoStatus, string> = {
     NOT_STARTED: 'Not started',
