@@ -75,6 +75,9 @@ function handleStatusChange(status: TodoStatus) {
           <span class="badge badge-outline">
             {{ Todo_STATUS_LABELS[props.todo.status] }}
           </span>
+          <span class="badge badge-secondary">
+            {{ props.todo.todoType?.name ?? 'No type' }}
+          </span>
 
           <button
             class="btn btn-ghost btn-sm"
