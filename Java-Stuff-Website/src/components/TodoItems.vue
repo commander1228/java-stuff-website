@@ -6,6 +6,7 @@ import { Todo_STATUS, type Todo, type TodoSort, type TodoStatus } from '@/types/
 const props = defineProps<{
   todos: Todo[]
   sortBy: TodoSort
+  todoTypeId?: number
   hideCompleted: boolean
 }>()
 
@@ -20,9 +21,14 @@ function handleStatusChange(todo: Todo, status: TodoStatus) {
 }
 
 const displayedTodos = computed(() => {
+  const typeFilteredTodos =
+    props.todoTypeId === undefined
+      ? props.todos
+      : props.todos.filter((todo) => todo.todoType?.id === props.todoTypeId)
+
   const visibleTodos = props.hideCompleted
-    ? props.todos.filter((todo) => todo.status !== 'COMPLETED')
-    : props.todos
+    ? typeFilteredTodos.filter((todo) => todo.status !== 'COMPLETED')
+    : typeFilteredTodos
 
   return [...visibleTodos].sort((first, second) => {
     if (props.sortBy === 'todoType') {

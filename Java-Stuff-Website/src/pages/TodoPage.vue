@@ -23,6 +23,7 @@ const isSavingEdit = ref(false)
 const todoTypeName = ref('')
 const isSavingTodoType = ref(false)
 const sortBy = ref<TodoSort>('createdDate')
+const selectedTodoTypeId = ref<number | undefined>()
 const hideCompleted = ref(true)
 
 async function loadTodos() {
@@ -179,12 +180,18 @@ async function handleEditSubmit() {
     </p>
 
     <div v-else class="mt-8">
-      <TodoListControls v-model:sort-by="sortBy" v-model:hide-completed="hideCompleted" />
+      <TodoListControls
+        v-model:sort-by="sortBy"
+        v-model:todo-type-id="selectedTodoTypeId"
+        v-model:hide-completed="hideCompleted"
+        :todo-types="todoTypes"
+      />
 
       <TodoItems
         class="mt-4"
         :todos="todos"
         :sort-by="sortBy"
+        :todo-type-id="selectedTodoTypeId"
         :hide-completed="hideCompleted"
         @edit="handleEdit"
         @delete="handleDelete"
