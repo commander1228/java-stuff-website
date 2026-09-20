@@ -9,7 +9,7 @@ export const Todo_STATUS_LABELS: Record<TodoStatus, string> = {
 }
 
 export interface Todo{
-    id:string
+    id:number
     title:string
     description:string
     createdDate:string
