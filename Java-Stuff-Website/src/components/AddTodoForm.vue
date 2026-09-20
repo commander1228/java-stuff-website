@@ -26,7 +26,6 @@ async function handleSubmit() {
   const createdTodo = await createTodo(todoToCreate)
   emptyTodo.title = ''
   emptyTodo.description = ''
-  emptyTodo.todoTypeId = undefined
   emit('added', createdTodo)
 }
 
